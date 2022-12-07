@@ -1,0 +1,24 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon -r dotenv/config server.js dotenv_config_path=./config/config.env",
+    "dev": "SET NODE_ENV=DEVELOPMENT& nodemon -r dotenv/config server.js dotenv_config_path=./config/config.env",
+    "prod": "SET NODE_ENV=PRODUCTION& nodemon -r dotenv/config server.js dotenv_config_path=./config/config.env",
+    "seeder": "node -r sucrase/register -r dotenv/config ./utils/seeder.js dotenv_config_path=./config/config.env",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "mongoose": "^6.7.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  }
+}
