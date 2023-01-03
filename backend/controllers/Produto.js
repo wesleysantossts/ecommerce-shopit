@@ -4,13 +4,16 @@ import ApiFeatures from '../utils/apiFeatures'
 
 class ProdutoController {
   async index(req, res, next) {
+    const resPerPage = 4;
+
     const apiFeatures = new ApiFeatures(ProdutoModel, req.query)
-      .search();
+      .search()
+      .filter()
+      .pagination(resPerPage);
 
     // find() - listar todos os produtos
     // const produtos = await ProdutoModel.find()
     const produtos = await apiFeatures.query;
-    console.log("🚀 ~ file: Produto.js:13 ~ ProdutoController ~ index ~ produtos", produtos)
 
     if (produtos.length === 0) return res.status(404).json("Produtos não encontrados.")
     
