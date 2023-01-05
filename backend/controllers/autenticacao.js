@@ -1,5 +1,6 @@
 import Usuario from '../models/usuario';
 import ErrorHandler from '../utils/errorHandler';
+import sendToken from '../utils/jwtToken';
 
 class Autenticacao {
   async registerUser (req, res, next) {
@@ -17,14 +18,16 @@ class Autenticacao {
     .catch(error => res.status(500).json({ erro: 'Erro ao criar o usuário', message: error.message }));
 
     // getJwtToken - metódo personalizado que criei no model "Usuario" usando o método "methods" (do Mongoose)
-    const token = user.getJwtToken();
+    // const token = user.getJwtToken();
+    // return res.json({ success: true, user: usuario, token });
+
+    // Criação do token e salvando ele no cookie
+    sendToken(user, res)
     
-    return res.json({ success: true, user, token });
   }
 
   async login (req, res, next) {
     const { email, senha } = req.body;
-    console.log("🚀 ~ file: autenticacao.js:27 ~ Autenticacao ~ login ~ senha", senha)
 
     if (!email || !senha) return res.status(400).json({ success: false, erro: 'Insira o e-mail e a senha' });
 
@@ -39,9 +42,11 @@ class Autenticacao {
 
     if (!senhaConfirmada) return res.status(400).json({ erro: "Senha incorreta" })
 
-    const token = await user.getJwtToken();
+    // const token = await user.getJwtToken();
+    // return res.json({ success: true, usuario: user, token })
 
-    return res.json({ success: true, usuario: user, token })
+    // Criação do token e salvando ele no cookie
+    sendToken(user, res)
   }
 }
 
