@@ -40,13 +40,29 @@ class Autenticacao {
     const senhaConfirmada = await user.comparePassword(senha)
       .catch(error => res.status(400).json({ sucess: false, mensagem: "Senha inválida", erro: error.message }));
 
-    if (!senhaConfirmada) return res.status(400).json({ erro: "Senha incorreta" })
+    if (!senhaConfirmada) return res.status(400).json({ erro: "Senha incorreta" });
 
     // const token = await user.getJwtToken();
     // return res.json({ success: true, usuario: user, token })
 
+    // req.session.variavel - usado para salvar uma variável na sessão e tem acesso a ela em todas as solicitações
+    // req.session.user = user;
+
     // Criação do token e salvando ele no cookie
     sendToken(user, res)
+  }
+
+  async logout (req, res, next) {
+    // Para deslogar basta passar um valor zerado ao cookie e expirando na mesma hora
+    res.cookie('token', null, {
+      expires: new Date(Date.now()),
+      httpOnly: true
+    })
+
+    // usado para excluir todos os elementos que foram salvos na sessão
+    // req.session.destroy()
+    
+    res.json({ success: true, message: 'Usuário deslogado com sucesso.' })
   }
 }
 
