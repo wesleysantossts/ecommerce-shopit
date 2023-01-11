@@ -38,7 +38,13 @@ class ProdutoController {
   }
 
   async store(req, res) {
-    const produto = await ProdutoModel.create(req.body)
+    const { token } = req.cookies;
+    const body = req.body.map(item => ({
+      ...item,
+      usuario: JSON.parse(token).user._id
+    }))
+
+    const produto = await ProdutoModel.create(body)
       .catch(err => res.status(404).json({ success: false, message: err.message }));
 
     return res.status(200).json({

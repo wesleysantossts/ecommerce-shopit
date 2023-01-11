@@ -1,5 +1,5 @@
 // Criando e envio do token e salvamento dele em cookie
-const sendToken = async (usuario, res) => {
+const sendToken = async (usuario, status, res) => {
   const token = await usuario.getJwtToken()
 
   // Opções do cookie
@@ -17,7 +17,7 @@ const sendToken = async (usuario, res) => {
 
   // res.cookie(nomeDesejado, token, opções) - usado para armazenar informações do usuário no cookie
   // return res.status(200).cookie('token', token, options).json({
-  return res.status(200).cookie('token', data, options).json({
+  return res.status(status).cookie('token', data, options).json({
     success: true,
     token,
     usuario

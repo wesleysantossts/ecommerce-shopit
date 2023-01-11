@@ -2,6 +2,7 @@ import { Router } from 'express';
 import ProdutoController from './controllers/produto';
 import AutenticacaoController from './controllers/autenticacao';
 import AutenticacaoMiddleware from './middlewares/autenticacao';
+import UsuarioController from './controllers/usuario';
 const routes = new Router();
 
 // Produto
@@ -16,5 +17,8 @@ routes.delete('/produto', AutenticacaoMiddleware.autenticar, ProdutoController.d
 routes.post('/register', AutenticacaoController.registerUser);
 routes.post('/login', AutenticacaoController.login);
 routes.get('/logout', AutenticacaoMiddleware.autenticar, AutenticacaoController.logout);
+routes.post('/senha/recuperar-senha', AutenticacaoController.forgotPassword)
+routes.put('/senha/reset/:token', AutenticacaoController.resetPassword)
+routes.get('/me', AutenticacaoMiddleware.autenticar, UsuarioController.getUserProfile)
 
 export default routes;

@@ -1,4 +1,4 @@
-import { Schema, model } from 'mongoose';
+import mongoose, { Schema, model } from 'mongoose';
 
 const Produto = new Schema({
   nome: {
@@ -83,6 +83,11 @@ const Produto = new Schema({
       },
     }
   ],
+  usuario: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Usuario',
+    required: true
+  },
   criadoEm: {
     type: Date,
     default: Date.now

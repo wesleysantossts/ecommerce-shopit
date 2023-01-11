@@ -2,6 +2,8 @@ import { Schema, model } from 'mongoose';
 import validator from 'validator';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+// usado para criptografar o token de reset da senha
+import crypto from 'crypto'
 
 const usuarioSchema = new Schema({
   nome: { type: String, required: [true, 'Insira um nome'], maxlength: [30, 'Seu nome não pode exceder 30 caracteres'] },
@@ -14,8 +16,8 @@ const usuarioSchema = new Schema({
   },
   role: { type: String, default: 'usuario' },
   createdAt: { type: Date, default: Date.now },
-  resetSenhaToken: String,
-  resetSenhaExpirada: Date
+  resetSenhaToken: { type: String },
+  resetSenhaExpirada: { type: Date }
 });
 
 // Encriptando a senha antes de salvar no banco
@@ -38,6 +40,24 @@ usuarioSchema.methods.getJwtToken = () => {
     // A função por ser assíncrona não pode ser em forma de arrow function, se for não funciona.
 usuarioSchema.methods.comparePassword = async function (senha) {
   return await bcrypt.compare(senha, this.senha)
+}
+
+// Criando o token de reset da senha
+usuarioSchema.methods.getResetPasswordToken = function () {
+  // Gerar o token
+    // randomBytes - gera uma criptografia de bytes com a largura do valor passado no argumento
+    // toString(encode) - transforma em string de acordo com o encode passado no argumento
+  const resetToken = crypto.randomBytes(20).toString('hex')
+
+  // Hash e armazenar o resetPasswordToken
+    // createHash(algoritmo) - cria um hash no formato do algoritmo que é passado no parametro
+    // digest(encode) - calcula a "digestão" do hash no formato do encode que é passado no parametro
+  this.resetSenhaToken = crypto.createHash('sha256').update(resetToken).digest('hex')
+
+  // Setar o tempo limite para resetar a senha
+  this.resetSenhaExpirada = Date.now() + 30 * 60 * 1000 // 30 minutos para atualizar a senha
+
+  return resetToken
 }
 
 export default model('usuario', usuarioSchema);
