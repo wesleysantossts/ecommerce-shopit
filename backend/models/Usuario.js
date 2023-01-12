@@ -9,6 +9,8 @@ const usuarioSchema = new Schema({
   nome: { type: String, required: [true, 'Insira um nome'], maxlength: [30, 'Seu nome não pode exceder 30 caracteres'] },
   // validator.isEmail - utilizado para verificar se é do tipo "email"
   email: { type: String, required: [true, 'Insira um e-mail'], unique: true, validate: [validator.isEmail, 'Insira um e-mail válido'] },
+  // select: false - usado para não mostrar a chave na consulta (quando false). O padrão é true. 
+    // Para retornar/mostrar na consulta deve-se usar o método ".select('+chave')" 
   senha: { type: String, required: [true, 'Insira uma senha'], minlength: [6, 'A senha não pode ter menos de 6 dígitos'], select: false },
   avatar: {
     public_id: { type: String, required: true },

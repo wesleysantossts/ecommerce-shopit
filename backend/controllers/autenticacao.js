@@ -39,12 +39,14 @@ class Autenticacao {
       // select - indica quais campos devem ser incluídos ou excluidos na consulta. Obs: sinal (-) antes do campo indica para excluir, sem sinal indica para adicionar, com sinal (+) força a incluir mesmo quando no model tem a chave "select: false"
     const user = await Usuario.findOne({ email }).select('+senha')
       .catch(error => res.status(404).json({ success: false, mensagem: 'Usuário não encontrado', erro: error.message }))    
-      
+
+    if (!user) return res.json({ success: false, message: 'Usuário não encontrado' })
+
     // Checando a senha criptografada
     const senhaConfirmada = await user.comparePassword(senha)
       .catch(error => res.status(400).json({ sucess: false, mensagem: "Senha inválida", erro: error.message }));
       
-    if (!senhaConfirmada) return res.status(400).json({ erro: "Senha incorreta" });
+    if (!senhaConfirmada) return res.status(400).json({ success: false, message: "Senha incorreta" });
 
     // const token = await user.getJwtToken();
     // return res.json({ success: true, usuario: user, token })

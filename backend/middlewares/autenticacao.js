@@ -21,7 +21,7 @@ class Autenticacao {
   }
 
   role (...roles) {
-    // quando o método precisa ter parametro, retorno o "(req, res, next)" como uma arrow function e faço tratamento da requisição dentro dessa arrow function 
+    // quando o método precisa ter parametro, deve-se retornar o "(req, res, next)" como uma arrow function e fazer tratamento da requisição dentro dessa arrow function 
     return (req, res, next) => {
       const { token } = req.cookies;
       const userFormat = JSON.parse(token).user
