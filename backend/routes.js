@@ -32,5 +32,8 @@ routes.delete('/admin/usuario/:id', AutenticacaoMiddleware.autenticar, Autentica
 
 // Pedido
 routes.post('/pedido/novo', AutenticacaoMiddleware.autenticar, PedidoController.novoPedido);
+routes.get('/pedido/me/:id', AutenticacaoMiddleware.autenticar, PedidoController.meuPedido);
+routes.get('/admin/pedidos', AutenticacaoMiddleware.autenticar, AutenticacaoMiddleware.role('admin'), PedidoController.pedidos);
+routes.put('/admin/pedido/:id', AutenticacaoMiddleware.autenticar, AutenticacaoMiddleware.role('admin'), PedidoController.atualizarPedido);
 
 export default routes;

@@ -25,7 +25,7 @@ class ProdutoController {
     })
   }
 
-  // Listar um produto específico
+  // Listar um produto pelo id
   async show(req, res, next) {
     const { id } = req.params;
 

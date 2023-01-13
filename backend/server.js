@@ -9,11 +9,11 @@ process.on('uncaughtException', err => {
   process.exit(1)
 })
 
-const server = app.listen(PORT, () => console.log(`Servidor rodando na porta ${PORT} em modo ${NODE_ENV}`))
-
 // Tratamento do erro de conexão "unhandledRejection". Caso o link no dotenv de conexão com o banco esteja incorreto.
 process.on('unhandledRejection', err => {
   console.log(`ERRO: ${err.message}`)
   console.log(`Erro ao conectar ao servidor. Corrija e tente novamente.`)
   server.close(() => process.exit(1))
 })
+
+const server = app.listen(PORT, () => console.log(`Servidor rodando na porta ${PORT} em modo ${NODE_ENV}`))
