@@ -35,5 +35,6 @@ routes.post('/pedido/novo', AutenticacaoMiddleware.autenticar, PedidoController.
 routes.get('/pedido/me/:id', AutenticacaoMiddleware.autenticar, PedidoController.meuPedido);
 routes.get('/admin/pedidos', AutenticacaoMiddleware.autenticar, AutenticacaoMiddleware.role('admin'), PedidoController.pedidos);
 routes.put('/admin/pedido/:id', AutenticacaoMiddleware.autenticar, AutenticacaoMiddleware.role('admin'), PedidoController.atualizarPedido);
+routes.delete('/admin/pedido/deletar/:id', AutenticacaoMiddleware.autenticar, AutenticacaoMiddleware.role('admin'), PedidoController.deletarPedido);
 
 export default routes;

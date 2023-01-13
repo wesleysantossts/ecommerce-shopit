@@ -35,7 +35,9 @@ class PedidoController {
   
   // Listar um pedido pelo ID
   async meuPedido (req, res, next) {
-    const pedido = await Pedido.find({ id: req.params.id })
+    // populate(caminho, select, model) - usado para preencher essa propriedade (caminho) passada no 1º parametro com os dados contidos nas propriedas informadas no "select" do 2º parametro, que pertencem ao model do 3º parametro
+      // isso não altera o documento no banco, só retorna a consulta com mais dados retirados de outro model
+    const pedido = await Pedido.findById(req.params.id).populate('usuario', 'nome email', 'usuario')
     
     if (!pedido) return next(new ErrorHandler('Nenhum pedido foi encontrado com esse ID', 404))
     
@@ -51,7 +53,7 @@ class PedidoController {
     
     if (!pedidos) return next(new ErrorHandler('Nenhum pedido foi encontrado com esse ID', 404))
     
-    return res.json({ success: true, valorTotal: Number(valorTotal.toFixed(2)), pedidos })
+    return res.json({ success: true, valorTotal: Number(valorTotal.toFixed(2)), pedidos: pedidos.sort((a, b) => a.criadoEm < b.criadoEm ? 1 : -1) })
   }
 
   // ADMIN - Atualizar pedido
@@ -69,6 +71,17 @@ class PedidoController {
     await pedido.save()
     return res.json({ success: true, message: 'Status do pedido atualizado com sucesso' })
   }
+
+  // ADMIN - Deletar pedido
+  async deletarPedido (req, res, next) {
+    const pedido = await Pedido.findById(req.params.id)
+    
+    if (!pedido) return next(new ErrorHandler('Nenhum pedido foi encontrado com esse ID', 404))
+
+    await pedido.remove()
+    
+    return res.json({ success: true, message: 'Pedido removido com sucesso' })
+  } 
 }
 
 async function atualizarEstoque (id, quantidade, res) {
