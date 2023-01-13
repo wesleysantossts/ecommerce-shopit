@@ -85,6 +85,7 @@ const Produto = new Schema({
   ],
   usuario: {
     type: mongoose.Schema.Types.ObjectId,
+    // ref - define o model ao qual esse caminho se refere. Ele referencia (popula) o model Usuario com essas informações. É tipo um relacionamento dessa coleção "Produto" com a coleção "Usuário" apontando pelo id (campo informado no "type")
     ref: 'Usuario',
     required: true
   },

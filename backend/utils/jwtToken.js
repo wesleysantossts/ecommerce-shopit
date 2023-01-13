@@ -11,8 +11,7 @@ const sendToken = async (usuario, status, res) => {
   }
 
   const data = JSON.stringify({
-    token,
-    user: usuario
+    token
   })
 
   // res.cookie(nomeDesejado, token, opções) - usado para armazenar informações do usuário no cookie

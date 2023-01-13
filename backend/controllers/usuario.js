@@ -2,12 +2,9 @@ import Usuario from '../models/usuario'
 import sendToken from '../utils/jwtToken'
 
 class UsuarioController {
-  // Pegar o usuário logado atual
+  // Listar o usuário logado atual
   async getUserProfile (req, res, next) {
-    const { token } = req.cookies
-    const { user } = JSON.parse(token)
-    
-    const usuario = await Usuario.findById(user._id)
+    const usuario = await Usuario.findById(req.user._id)
 
     return res.json({
       success: true,
@@ -15,12 +12,9 @@ class UsuarioController {
     })
   }
 
-  // Atualizar senha
+  // Atualizar senha do usuário logado
   async updatePassword (req, res, next) {
-    const { token } = req.cookies 
-    const { user } = JSON.parse(token)
-
-    const usuario = await Usuario.findById(user._id).select('+senha') // deve-se colocar o "select('+senha')" para adicionar o atributo da senha na resposta da consulta
+    const usuario = await Usuario.findById(req.user._id).select('+senha') // deve-se colocar o "select('+senha')" para adicionar o atributo da senha na resposta da consulta
     
     const isMatched = await usuario.comparePassword(req.body.senhaAntiga)
 
@@ -33,18 +27,16 @@ class UsuarioController {
     sendToken(usuario, 200, res)
   }
 
+  // Atualizar perfil do usuário logado
   async updateProfile (req, res, next) {
     const novosDados = {
       nome: req.body.nome,
       email: req.body.email
     }
 
-    const { token } = req.cookies 
-    const { user: { _id } } = JSON.parse(token)
-
     // Updata avatar - a fazer nas próximas aulas
 
-    const usuario = await Usuario.findByIdAndUpdate(_id, novosDados, {
+    const usuario = await Usuario.findByIdAndUpdate(req.user._id, novosDados, {
       new: true,
       // rodar os validadores
       runValidators: true,
@@ -69,7 +61,7 @@ class UsuarioController {
     })
   }
 
-  // Listar apenas um usuário
+  // Listar um usuário pelo id
   async getUserDetails (req, res, next) {
     const { id } = req.params
 
@@ -83,7 +75,7 @@ class UsuarioController {
     })
   }
 
-  // Atualizando um usuario
+  // Atualizar um usuario
   async updateUserProfile (req, res, next) {
     const novosDados = {
       nome: req.body.nome,
@@ -106,7 +98,7 @@ class UsuarioController {
     return res.json({ success: true, user: usuario })
   }
 
-  // Deletando um usuário
+  // Deletar um usuário
   async deleteUser (req, res, next) {
     const usuario = await Usuario.findById(req.params.id)
 

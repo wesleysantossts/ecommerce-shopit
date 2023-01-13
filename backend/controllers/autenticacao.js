@@ -5,6 +5,7 @@ import Email from '../utils/sendEmail';
 import crypto from 'crypto';
 
 class Autenticacao {
+  // Criar usuário
   async registerUser (req, res, next) {
     const { nome, email, senha } = req.body;
 
@@ -30,6 +31,7 @@ class Autenticacao {
     if (user?.outputSize !== 0) sendToken(user, 200, res)
   }
 
+  // Logar usuário
   async login (req, res, next) {
     const { email, senha } = req.body;
 
@@ -58,6 +60,7 @@ class Autenticacao {
     sendToken(user, 200, res)
   }
 
+  // Deslogar usuário
   async logout (req, res, next) {
     // Para deslogar basta passar um valor zerado ao cookie e expirando na mesma hora
     res.cookie('token', null, {
@@ -71,7 +74,7 @@ class Autenticacao {
     return res.json({ success: true, message: 'Usuário deslogado com sucesso.' })
   }
 
-  // Recuperação de senha
+  // Gerar token de recuperação de senha
   async forgotPassword (req, res, next) {
     const user = await Usuario.findOne({ where: { email: req.body.email }})
 
@@ -106,6 +109,7 @@ class Autenticacao {
     return res.json({ success: true, message: `Email enviado a: ${user.email}`})
   }
 
+  // Alteração de senha
   async resetPassword (req, res, next) {
     const { token } = req.params
     const { senha, confirmarSenha } = req.body

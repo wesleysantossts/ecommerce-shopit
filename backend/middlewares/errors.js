@@ -7,9 +7,9 @@ export default (err, req, res, next) => {
   if (process.env.NODE_ENV === 'DEVELOPMENT') {
     return res.status(err.statusCode).json({
       success: false,
-      error: err,
       message: err.message,
-      stack: err.stack
+      stack: err.stack,
+      error: err
     })
   }
 
@@ -28,6 +28,24 @@ export default (err, req, res, next) => {
     if (err.name == 'ValidationError') {
       const message = Object.values(err.errors).map(value => value.message);
       error = new ErrorHandler(message, 400);
+    }
+
+    // Erro de chaves duplicadas do Mongoose - quando a chave não pode ter mais de 1 valor igual
+    if (err.name == 11000) {
+      const message = `O valor da chave ${Object.keys(err.keyValue)} já existe no banco de dados`
+      error = new ErrorHandler(message, 400)
+    }
+
+    // Erro do JWT errado
+    if (err.name === 'JsonWebTokenError') {
+      const message = 'O Json Web Token está inválido. Tente novamente!'
+      error = new ErrorHandler(message, 400)
+    }
+    
+    // Erro do token JWT expirado
+    if (err.name === 'TokenExpiredError') {
+      const message = 'O Json Web Token está expirado. Tente novamente!'
+      error = new ErrorHandler(message, 400)
     }
 
     return res.status(err.statusCode).json({

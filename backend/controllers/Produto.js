@@ -3,6 +3,7 @@ import ErrorHandler from '../utils/errorHandler'
 import ApiFeatures from '../utils/apiFeatures'
 
 class ProdutoController {
+  // Listar produtos
   async index(req, res, next) {
     const resPerPage = 4;
 
@@ -24,6 +25,7 @@ class ProdutoController {
     })
   }
 
+  // Listar um produto específico
   async show(req, res, next) {
     const { id } = req.params;
 
@@ -37,11 +39,11 @@ class ProdutoController {
     return res.json({ success: true, produto })
   }
 
+  // Criar um produto
   async store(req, res) {
-    const { token } = req.cookies;
     const body = req.body.map(item => ({
       ...item,
-      usuario: JSON.parse(token).user._id
+      usuario: req.user._id
     }))
 
     const produto = await ProdutoModel.create(body)
@@ -53,6 +55,7 @@ class ProdutoController {
     })
   }
 
+  // Atualizar um produto pelo id
   async update(req, res) {
     const { id } = req.body;
     
@@ -69,6 +72,7 @@ class ProdutoController {
     return res.json({ message: "Produto atualizado com sucesso.", produto })
   }
   
+  // Deletar um produto
   async delete(req, res) {
     const { id } = req.body;
     
