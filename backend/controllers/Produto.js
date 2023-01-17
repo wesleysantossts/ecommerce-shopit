@@ -85,6 +85,87 @@ class ProdutoController {
 
     return res.json({ message: "Produto removido com sucesso." })
   }
+
+  // Criar um review
+  async createReviewProduct (req, res, next) {
+    const { nota, comentario, idProduto } = req.body
+
+    const avaliacao = {
+      usuario: req.user._id,
+      nome: req.user.nome,
+      nota: Number(nota),
+      comentario
+    }
+
+    const produto = await ProdutoModel.findById(idProduto)
+
+    // toString() - precisa colocar o toString() para poder transformar o formato "ObjectId()" do objeto em uma string para fazer a comparação
+    const isReviewed = produto.avaliacao.find(item => item.usuario ? item.usuario.toString() === req.user._id.toString() : undefined)
+
+    if (isReviewed) {
+      produto.avaliacao.forEach(r => {
+        if (r.usuario && r.usuario.toString() === req.user._id.toString()) {
+          r.comentario = comentario
+          r.nota = nota
+        }
+      })
+    } else {
+      produto.avaliacao.push(avaliacao)
+      produto.quantidadeReviews = produto.avaliacao.length
+    }
+
+    produto.avaliacaoNota = produto.avaliacao.reduce((acc, item) => item.nota + acc, 0) / produto.avaliacao.length
+  
+    // validateBeforeSave - usado para validar ou não o campo antes de salvar no banco
+    await produto.save({ validateBeforeSave: false })
+    return res.json({ success: true })
+  }
+
+  // Pegar todos os reviews => /produto/avaliacoes/:id
+  async getProductReview (req, res, next) {
+    const { id } = req.params
+
+    const produto = await ProdutoModel.findById(id)
+
+    if (!produto) return next(new ErrorHandler('Produto não encontrado pelo ID', 404))
+
+    return res.json({
+      success: true,
+      avaliacoes: produto.avaliacao
+    })
+  }
+
+  // Deletar review => /produto/avaliacao?id=2134564313
+  async deleteReview (req, res, next) {
+    const { produtoId, id } = req.query
+
+    let produto = await ProdutoModel.findById(produtoId)
+
+    if (!produto) return next(new ErrorHandler('Produto não encontrado pelo ID', 404))
+
+    const avaliacao = produto.avaliacao.filter(item => item._id.toString() !== id.toString())
+
+    const quantidadeReviews = avaliacao.length
+
+    const nota = produto.avaliacao.reduce((acc, item) => item.nota + acc, 0) / quantidadeReviews
+
+    produto = await ProdutoModel.findByIdAndUpdate(produtoId, {
+      avaliacao,
+      nota,
+      quantidadeReviews
+    }, {
+      // new - retorna o registro criado/atualizado. Por padrão, este método retorna o registro antes da atualização
+      new: true,
+      // runValidators - usado para realizar a operação desativando a validação das propriedades. Por exemplo, se tiver alguma propriedade que não foi inserida depois de uma atualização do Model, ele não vai gerar um erro, vai realizar a operação se aqui estiver "false". Se "true", vai travar a aplicação porque vai gerar um erro que tem uma propriedade faltando OU se tiver uma de um tipo diferente 
+      runValidators: false,
+      useFindAndModify: false
+    })
+
+    return res.json({
+      success: true,
+      avaliacoes: produto.avaliacao
+    })
+  }
 }
 
 export default new ProdutoController()
