@@ -12,6 +12,10 @@ routes.get('/produto/:id', AutenticacaoMiddleware.autenticar, ProdutoController.
 routes.post('/produto/novo', AutenticacaoMiddleware.autenticar, AutenticacaoMiddleware.role('admin'), ProdutoController.store);
 routes.put('/produto/atualizar', AutenticacaoMiddleware.autenticar, ProdutoController.update);
 routes.delete('/produto', AutenticacaoMiddleware.autenticar, ProdutoController.delete);
+// Reviews
+routes.get('/produto/avaliacoes/:id', AutenticacaoMiddleware.autenticar, ProdutoController.getProductReview);
+routes.put('/produto/avaliacao', AutenticacaoMiddleware.autenticar, ProdutoController.createReviewProduct);
+routes.delete('/produto/avaliacao', AutenticacaoMiddleware.autenticar, ProdutoController.deleteReview);
 
 // Autenticação
 routes.post('/register', AutenticacaoController.registerUser);

@@ -69,6 +69,11 @@ const Produto = new Schema({
   },
   avaliacao: [
     {
+      usuario: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Usuario',
+        required: true
+      },
       nome: {
         type: String,
         required: true,
