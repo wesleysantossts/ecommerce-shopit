@@ -2,10 +2,11 @@ import { legacy_createStore as createStore, combineReducers, applyMiddleware } f
 import thunk from 'redux-thunk'; // permite escrever funções com lógica interna que podem interagir com os métodos dispatch e getState de uma loja Redux
 import { composeWithDevTools } from 'redux-devtools-extension'; // usado para facilitar o uso da extensão Redux Devtools do Chrome
 
-import { productsReducer } from './modules/produtos/reducer';
+import { productsReducer, productDetails } from './modules/produtos/reducer';
 
 const reducer = combineReducers({
-  products: productsReducer
+  products: productsReducer,
+  productDetails
 } ); // usado para juntar todos os reducers
 
 let initialState = [];

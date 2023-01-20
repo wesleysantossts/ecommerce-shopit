@@ -1,17 +1,22 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import Metadata from './layout/Metadata';
 import Produtos from './products/products';
+import Loader from './layout/Loader';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { getProducts } from '../store/modules/produtos/actions'; // deve-se importar as funções dos actions para funcionar
+import { useAlert } from 'react-alert';
 
 const Home = () => {
   const dispatch = useDispatch();
-  const { loading, products, error, productsCount } = useSelector(state => state.products)
+  const { loading, products, error } = useSelector(state => state.products)
+  const alert = useAlert();
   
   useEffect(() => {
+    if (error) return alert.error(error || 'Erro ao buscar os produtos')
+
     dispatch(getProducts)
-  }, [dispatch])
+  }, [dispatch, alert, error])
   
   return (
     <Fragment>
@@ -20,10 +25,10 @@ const Home = () => {
 
       <section id="products" className="container mt-5">
         {loading ? 
-          <h2>Carregando...</h2>
+          <Loader />
           :
           <div className="row">
-            {products && products.map(item => (<Produtos produto={item} />))}
+            {products && products.map((item, index) => (<Produtos key={index} produto={item} />))}
           </div>
         }
       </section>
