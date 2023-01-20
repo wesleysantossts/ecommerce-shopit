@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Fragment } from 'react';
+import React, { useEffect, Fragment } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Carousel } from 'react-bootstrap';
 
@@ -10,7 +10,6 @@ const ProductDetails = () => {
   const dispatch = useDispatch()
   const params = useParams()
   const { loading, error, product } = useSelector(state => state.productDetails)
-  console.log("🚀 ~ file: productDetails.js:13 ~ ProductDetails ~ product", product)
 
   useEffect(() => {
     dispatch(getProductDetails(params.id))
@@ -18,16 +17,18 @@ const ProductDetails = () => {
 
   return (
     <Fragment>
-      {loading 
+      {loading || loading === undefined
         ? <Loader />
         :  
         <div className="row f-flex justify-content-around">
           <div className="col-12 col-lg-5 img-fluid" id="product_image">
             <Carousel
-              pause="hover"
+              pause="hover" 
             >
-              {product.imagens && product.imagens.map((item, index) => (
-                <Carousel.Item key={index}>
+              {product?.imagens && product.imagens.map((item, index) => (
+                <Carousel.Item 
+                  key={index}
+                >
                   <img className="d-block w-100" src={item.url} alt={product.nome} />
                 </Carousel.Item>
               ))}

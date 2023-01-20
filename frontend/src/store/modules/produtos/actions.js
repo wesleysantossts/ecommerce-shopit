@@ -44,6 +44,7 @@ export const getProductDetails = (id) => async (dispatch) => {
       })
     })
     
+  console.log("🚀 ~ file: actions.js:40 ~ getProductDetails ~ data", data)
   dispatch({
     type: PRODUCTS_DETAILS_SUCCESS,
     payload: data.produto
