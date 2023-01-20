@@ -8,7 +8,7 @@ const routes = new Router();
 
 // Produto
 routes.get('/produtos', ProdutoController.index);
-routes.get('/produto/:id', AutenticacaoMiddleware.autenticar, ProdutoController.show);
+routes.get('/produto/:id', ProdutoController.show);
 routes.post('/produto/novo', AutenticacaoMiddleware.autenticar, AutenticacaoMiddleware.role('admin'), ProdutoController.store);
 routes.put('/produto/atualizar', AutenticacaoMiddleware.autenticar, ProdutoController.update);
 routes.delete('/produto', AutenticacaoMiddleware.autenticar, ProdutoController.delete);

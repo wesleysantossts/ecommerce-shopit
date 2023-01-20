@@ -31,7 +31,8 @@ export async function clearErrors (dispatch) {
 };
 
 // Detalhes do produto
-export async function getProductDetails (id, dispatch) {
+// arrow function - tem que ser dessa forma mesmo para puxar o id corretamente. É uma arrow function (com id como parametro) com outra arrow function dentro (com dispatch como parametro)
+export const getProductDetails = (id) => async (dispatch) => {
   dispatch({ type: PRODUCTS_DETAILS_REQUEST })
 
   const { data } = await axios.get(`/v1/produto/${id}`)
@@ -42,9 +43,9 @@ export async function getProductDetails (id, dispatch) {
         error: error
       })
     })
-
+    
   dispatch({
     type: PRODUCTS_DETAILS_SUCCESS,
-    payload: data.product
+    payload: data.produto
   })
 }
