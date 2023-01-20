@@ -1,36 +1,36 @@
-import React, { Fragment } from 'react';
-import Metadata from './layout/Metadata'
+import React, { Fragment, useState, useEffect } from 'react';
+import Metadata from './layout/Metadata';
+import Produtos from './products/products';
+import Loader from './layout/Loader';
+
+import { useDispatch, useSelector } from 'react-redux';
+import { getProducts } from '../store/modules/produtos/actions'; // deve-se importar as funções dos actions para funcionar
+import { useAlert } from 'react-alert';
 
 const Home = () => {
+  const dispatch = useDispatch();
+  const { loading, products, error } = useSelector(state => state.products)
+  const alert = useAlert();
+  
+  useEffect(() => {
+    if (error) return alert.error(error || 'Erro ao buscar os produtos')
+
+    dispatch(getProducts)
+  }, [dispatch, alert, error])
+  
   return (
     <Fragment>
       <Metadata title="Melhores Produtos Online" />
       <h1 id="products_heading">Latest Products</h1>
 
-      <section id="products" class="container mt-5">
-        <div class="row">
-          <div class="col-sm-12 col-md-6 col-lg-3 my-3">
-            <div class="card p-3 rounded">
-              <img
-                class="card-img-top mx-auto"
-                src="https://m.media-amazon.com/images/I/617NtexaW2L._AC_UY218_.jpg"
-              />
-              <div class="card-body d-flex flex-column">
-                <h5 class="card-title">
-                  <a href="">128GB Solid Storage Memory card - SanDisk Ultra</a>
-                </h5>
-                <div class="ratings mt-auto">
-                  <div class="rating-outer">
-                    <div class="rating-inner"></div>
-                  </div>
-                  <span id="no_of_reviews">(5 Reviews)</span>
-                </div>
-                <p class="card-text">$45.67</p>
-                <a href="#" id="view_btn" class="btn btn-block">View Details</a>
-              </div>
-            </div>
+      <section id="products" className="container mt-5">
+        {loading ? 
+          <Loader />
+          :
+          <div className="row">
+            {products && products.map((item, index) => (<Produtos key={index} produto={item} />))}
           </div>
-        </div>
+        }
       </section>
     </Fragment>
   )

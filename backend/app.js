@@ -6,6 +6,7 @@ import errorHandler from './middlewares/errors';
 import connectDatabase from './config/database';
 // Usado para analisar a solicitação de cookies feita pelo cliente ao servidor. Permite assinar ou não assinar um cookie (colocando um SECRET)
 import cookieParser from 'cookie-parser'; 
+import cors from 'cors';
 const app = express();
 
 class App {
@@ -32,6 +33,7 @@ class App {
       //   cookie: {
       //     maxAge: Number(process.env.SESSION_COOKIE_EXPIRES_TIME) 
       //   }})
+      cors()
     )
   }
   

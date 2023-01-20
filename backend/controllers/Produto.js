@@ -5,7 +5,7 @@ import ApiFeatures from '../utils/apiFeatures'
 class ProdutoController {
   // Listar produtos
   async index(req, res, next) {
-    const resPerPage = 4;
+    const resPerPage = 8;
 
     const apiFeatures = new ApiFeatures(ProdutoModel, req.query)
       .search()
