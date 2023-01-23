@@ -5,10 +5,10 @@ import {
 } from '../action.types';
 
 // dispatch - usado para disparar a action
-export async function getProducts (dispatch) {
+export const getProducts = (currentPage = 1) => async (dispatch) => {
   dispatch({ type: ALL_PRODUCTS_REQUEST })
   // tem que mudar o proxy no package.json para apontar para o localhost OU servidor para funcionar (ver "package.json"). Sempre que alterar o package.json tem que reiniciar a aplicação (app) 
-  const { data } = await axios.get('/v1/produtos') 
+  const { data } = await axios.get(`/v1/produtos?page=${currentPage}`) 
     .catch(error => {
       dispatch({
         type: ALL_PRODUCTS_FAIL,

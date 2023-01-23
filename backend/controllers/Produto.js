@@ -5,7 +5,8 @@ import ApiFeatures from '../utils/apiFeatures'
 class ProdutoController {
   // Listar produtos
   async index(req, res, next) {
-    const resPerPage = 8;
+    const resPerPage = 4;
+    const quantidade = await ProdutoModel.countDocuments(); // usado para contar quantos documentos tem no banco (nesse caso, quantos produtos tem no banco)
 
     const apiFeatures = new ApiFeatures(ProdutoModel, req.query)
       .search()
@@ -20,7 +21,8 @@ class ProdutoController {
     
     return res.json({
       success: true,
-      quantidade: produtos.length,
+      quantidade,
+      resPorPagina: resPerPage,
       produtos 
     })
   }
