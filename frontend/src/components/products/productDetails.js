@@ -1,6 +1,7 @@
 import React, { useEffect, Fragment } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Carousel } from 'react-bootstrap';
+import Metadata from '../layout/Metadata';
 
 import { getProductDetails } from '../../store/modules/produtos/actions';
 import { useParams } from 'react-router-dom';
@@ -13,14 +14,15 @@ const ProductDetails = () => {
 
   useEffect(() => {
     dispatch(getProductDetails(params.id))
-  }, [dispatch])
+  }, [dispatch, params])
 
   return (
     <Fragment>
       {loading || loading === undefined
         ? <Loader />
-        :  
+        :
         <div className="row f-flex justify-content-around">
+          <Metadata title={product.nome} />  
           <div className="col-12 col-lg-5 img-fluid" id="product_image">
             <Carousel
               pause="hover" 
