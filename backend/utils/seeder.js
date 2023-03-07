@@ -15,6 +15,7 @@ const seederProdutos = async () => {
   // inserir vários produtos ao mesmo tempo no banco
   await Produto.insertMany(produtos)
     .catch(error => {
+      console.log("🚀 ~ file: seeder.js:18 ~ seederProdutos ~ error:", error)
       console.log("Erro ao tentar inserir os produtos padrão")
       process.exit()
     })
