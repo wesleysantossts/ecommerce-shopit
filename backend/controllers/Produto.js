@@ -6,7 +6,14 @@ class ProdutoController {
   // Listar produtos
   async index(req, res, next) {
     const resPerPage = 4;
-    const quantidade = await ProdutoModel.countDocuments(); // usado para contar quantos documentos tem no banco (nesse caso, quantos produtos tem no banco)
+    const { keyword } = req.query;
+    let quantidade = 0;
+
+    if (keyword) {
+      quantidade = await ProdutoModel.countDocuments({ nome: { $regex: keyword, $options: 'i' } });
+    } else {
+      quantidade = await ProdutoModel.countDocuments(); // usado para contar quantos documentos tem no banco (nesse caso, quantos produtos tem no banco)
+    }
 
     const apiFeatures = new ApiFeatures(ProdutoModel, req.query)
       .search()
@@ -35,6 +42,7 @@ class ProdutoController {
     
     // findById() - busca do produto pelo ID
     const produto = await ProdutoModel.findById(id)
+    console.log("🚀 ~ file: Produto.js:39 ~ ProdutoController ~ show ~ produto:", produto)
     
     if (!produto) return next(new ErrorHandler("Produto não encontrado pelo ID", 400))
 

@@ -16,6 +16,7 @@ function App() {
           <Routes>
             {/* <Route path="/" element={<Elemento />} /> - aponta qual é o componente que será mostrado na rota. Propriedade "path" indica a rota que será digitada no navegador, a propriedade "element" indica o componente que será mostrado nessa rota */}
             <Route path="/" element={<Home />} exact /> 
+            <Route path="/search/:keyword" element={<Home />} /> 
             <Route path="/produto/:id" element={<ProductDetails/>} exact />
           </Routes>
         </div>

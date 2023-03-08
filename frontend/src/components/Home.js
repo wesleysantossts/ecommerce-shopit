@@ -3,24 +3,24 @@ import Metadata from './layout/Metadata';
 import Produtos from './products/products';
 import Loader from './layout/Loader';
 import Pagination from 'react-js-pagination';
-
 import { useDispatch, useSelector } from 'react-redux';
 import { getProducts } from '../store/modules/produtos/actions'; // deve-se importar as funções dos actions para funcionar
 import { useAlert } from 'react-alert';
+import { useParams } from 'react-router-dom';
 
 const Home = () => {
   const dispatch = useDispatch();
   const { loading, products, error, productsCount, resPerPage } = useSelector(state => state.products)
-  console.log("🚀 ~ file: Home.js:14 ~ Home ~ productsCount", productsCount, resPerPage)
   const alert = useAlert();
-
-  const [currentPage, setCurrentPage] = useState()
+  const { keyword } = useParams();
+  
+  const [currentPage, setCurrentPage] = useState(1);
   
   useEffect(() => {
     if (error) return alert.error(error || 'Erro ao buscar os produtos')
 
-    dispatch(getProducts(currentPage))
-  }, [dispatch, alert, error, currentPage])
+    dispatch(getProducts(keyword, currentPage))
+  }, [dispatch, alert, error, keyword, currentPage])
   
   return (
     <Fragment>
