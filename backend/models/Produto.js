@@ -39,6 +39,7 @@ const Produto = new Schema({
     enum: {
       values: [
         'Eletrônicos',
+        'Escritório',
         'Câmeras',
         'Laptop',
         'Fones de ouvido',

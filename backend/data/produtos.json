@@ -16,5 +16,77 @@
     "quantidadeReviews": 32,
     "avaliacao": [],
     "usuario": "640797a056b77385869cf539"
+  },
+  {
+    "nome": "Box Harry Potter",
+    "preco": 110.99,
+    "descricao": "Box de livros do Harry Potter",
+    "avaliacaoNota": 0,
+    "imagens": [
+        {
+        "public_id": "produtos/abcde",
+        "url": "https://m.media-amazon.com/images/I/61SkuWTI+TL.jpg"
+        }
+    ],
+    "categoria": "Livros",
+    "vendedor": "Ebay",
+    "estoque": 20,
+    "quantidadeReviews": 0,
+    "avaliacao": [],
+    "usuario": "640797a056b77385869cf539"
+  },
+  {
+    "nome": "Box Percy Jackson",
+    "preco": 122.99,
+    "descricao": "Box de livros do Percy Jackson",
+    "avaliacaoNota": 0,
+    "imagens": [
+        {
+        "public_id": "produtos/abcde",
+        "url": "https://m.media-amazon.com/images/I/41WXXbp1WcL._SY498_BO1,204,203,200_.jpg"
+        }
+    ],
+    "categoria": "Livros",
+    "vendedor": "Ebay",
+    "estoque": 10,
+    "quantidadeReviews": 0,
+    "avaliacao": [],
+    "usuario": "640797a056b77385869cf539"
+  },
+  {
+    "nome": "Cadeira Gamer",
+    "preco": 800.99,
+    "descricao": "Nova cadeira gamer",
+    "avaliacaoNota": 0,
+    "imagens": [
+        {
+        "public_id": "produtos/abcde",
+        "url": "https://m.media-amazon.com/images/I/811-HoAXB0L._AC_SY679_.jpg"
+        }
+    ],
+    "categoria": "Escritório",
+    "vendedor": "Ebay",
+    "estoque": 10,
+    "quantidadeReviews": 0,
+    "avaliacao": [],
+    "usuario": "640797a056b77385869cf539"
+  },
+  {
+    "nome": "Cadeira Presidente de Escritório",
+    "preco": 800.99,
+    "descricao": "Nova cadeira de escritório",
+    "avaliacaoNota": 0,
+    "imagens": [
+        {
+        "public_id": "produtos/ab",
+        "url": "https://dcf83otphg8a2.cloudfront.net/Custom/Content/Products/18/60/1860439_cadeira-de-escritorio-presidente-dickson-healer-telada-e-encosto-de-cabeca_m2_637889834566111942.jpg"
+        }
+    ],
+    "categoria": "Escritório",
+    "vendedor": "Ebay",
+    "estoque": 10,
+    "quantidadeReviews": 0,
+    "avaliacao": [],
+    "usuario": "640797a056b77385869cf539"
   }
 ]
